@@ -506,6 +506,18 @@ Dal punto di vista concettuale, la base di conoscenza può essere interpretata c
 
     <h2>4.1 Diagramma di Flusso Dati</h2>
 
+    <p>Un diagramma di flusso rappresenta visivamente come i diversi componenti software (i nodi ROS) comunicano tra loro usando i topic:</p>
+
+    <ol>
+        <li><strong>Input Utente</strong>: L'utente digita un comando specifico nel terminale</li>
+        <li><strong>Pubblicazione</strong>: Il nodo keyboard_input_node pubblica il comando sul topic 'user_input'</li>
+        <li><strong>Elaborazione</strong>: Il nodo library_assistant riceve e processa la richiesta utente</li>
+        <li><strong>Database Query</strong>: Viene effettuata una ricerca nel file database_libri.json</li>
+        <li><strong>Comando Movimento</strong>: Viene pubblicato sul topic 'nao_movement' il codice shelf_row</li>
+        <li><strong>Controllo Robot</strong>: Il nodo nao_controller_node riceve il comando e attiva il percorso</li>
+        <li><strong>Simulazione</strong>: Webots esegue fisicamente i movimenti del robot NAO virtuale</li>
+    </ol>
+
     <div class="architecture-diagram">
 ┌─────────────┐     user_input      ┌─────────────────┐
 │  Keyboard   │────────────────────▶│ Library         │
@@ -530,17 +542,6 @@ Dal punto di vista concettuale, la base di conoscenza può essere interpretata c
                                     │                 │
                                     └─────────────────┘</div>
 
-
-    <ol>
-        <li><strong>Input Utente</strong>: L'utente digita un comando specifico nel terminale</li>
-        <li><strong>Pubblicazione</strong>: Il nodo keyboard_input_node pubblica il comando sul topic 'user_input'</li>
-        <li><strong>Elaborazione</strong>: Il nodo library_assistant riceve e processa la richiesta utente</li>
-        <li><strong>Database Query</strong>: Viene effettuata una ricerca nel file database_libri.json</li>
-        <li><strong>Comando Movimento</strong>: Viene pubblicato sul topic 'nao_movement' il codice shelf_row</li>
-        <li><strong>Controllo Robot</strong>: Il nodo nao_controller_node riceve il comando e attiva il percorso</li>
-        <li><strong>Simulazione</strong>: Webots esegue fisicamente i movimenti del robot NAO virtuale</li>
-    </ol>
-
     <div class="success-box">
         <strong>✅ Vantaggi dell'Architettura:</strong><br>
         L'utilizzo del pattern Publisher-Subscriber di ROS2 garantisce un disaccoppiamento completo tra i componenti, permettendo modularità e facilità di manutenzione del sistema.
@@ -551,6 +552,25 @@ Dal punto di vista concettuale, la base di conoscenza può essere interpretata c
     <h1>5. INTERFACCIA UTENTE</h1>
 
     <h2>5.1 Avvio del Sistema</h2>
+
+    <p>
+        Per avviare correttamente il sistema sono necessari <strong>due terminali</strong>, poiché 
+        <strong>ROS 2 non gestisce automaticamente l'esecuzione parallela dei nodi</strong>. 
+        Ogni nodo o processo va lanciato manualmente (o tramite script) in un terminale dedicato.
+    </p>
+
+    <h3>Terminale 1 – Simulazione Webots + Robot</h3>
+    <p>
+        Avvia la simulazione in <strong>Webots</strong> con il robot <strong>NAO</strong> e i nodi principali ROS 2. 
+        Questo terminale mette il robot in <strong>attesa dei comandi</strong> da parte dell’utente.
+    </p>
+
+    <h3>Terminale 2 – Interfaccia utente (input da tastiera)</h3>
+    <p>
+        Avvia il nodo ROS 2 che gestisce l'<strong>interazione con l'utente</strong>. 
+        Permette all'utente di inviare comandi tramite tastiera 
+        (es. <em>richiedere informazioni su un libro</em> o <em>farsi guidare a uno scaffale</em>).
+    </p>
     
     <div class="code-block"># Terminal 1: Avvio sistema principale
 cd ~/nao_library_ws/src/nao_library_assistant
@@ -718,6 +738,12 @@ ros2 run nao_library_assistant keyboard_input_node</div>
 
     <h2>7.1 Organizzazione Directory</h2>
     
+    <p>
+    Questa directory rappresenta l’organizzazione completa del progetto <strong>NAO Library Assistant</strong>, 
+    è strutturata per raccogliere in modo ordinato tutti i file e le cartelle necessari al 
+    <strong>funzionamento del progetto</strong>.
+    </p>
+
     <div class="directory-tree">nao_library_ws/
 ├── src/nao_library_assistant/
 │   ├── nao_library_assistant/          # Moduli Python ROS2
