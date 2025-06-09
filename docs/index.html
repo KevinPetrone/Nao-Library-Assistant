@@ -292,22 +292,22 @@
             <span>2. BASE DI CONOSCENZA, GESTIONE DATABASE</span>
         </div>
         <div class="toc-item">
-            <span>2. ARCHITETTURA DEL SISTEMA</span>
+            <span>3. ARCHITETTURA DEL SISTEMA</span>
         </div>
         <div class="toc-item">
-            <span>3. FLUSSO DI COMUNICAZIONE</span>
+            <span>4. MAPPATURA NODI/TOPIC ROS</span>
         </div>
         <div class="toc-item">
-            <span>4. STRUTTURA DEL PROGETTO</span>
+            <span>5. INTERFACCIA UTENTE</span>
         </div>
         <div class="toc-item">
-            <span>5. SISTEMA DI NAVIGAZIONE</span>
+            <span>6. SISTEMA DI NAVIGAZIONE</span>
         </div>
         <div class="toc-item">
-            <span>6. INSTALLAZIONE E CONFIGURAZIONE</span>
+            <span>7. STRUTTURA DEL PROGETTO</span>
         </div>
         <div class="toc-item">
-            <span>7. INTERFACCIA UTENTE</span>
+            <span>8. INSTALLAZIONE E CONFIGURAZIONE</span>
         </div>
         <div class="toc-item">
             <span>9. RISOLUZIONE PROBLEMI</span>
@@ -320,9 +320,7 @@
     <!-- CONTENUTO PRINCIPALE -->
     <h1>1. INTRODUZIONE</h1>
     
-    <p>Il progetto <strong>NAO Library Assistant</strong> rappresenta un sistema robotico avanzato che integra <span class="emphasis">ROS2 (Robot Operating System 2)</span> con il simulatore <span class="emphasis">Webots R2025a</span> per controllare un robot NAO virtuale in un ambiente bibliotecario simulato.</p>
-    
-    <p>Il sistema permette all'utente di interagire tramite comandi testuali per richiedere libri specifici, mentre il robot NAO risponde alle richieste e naviga autonomamente tra gli scaffali della biblioteca per accompagnare l'utente allo scaffale del libro richiesto, dimostrando un'applicazione pratica della robotica di servizio.</p>
+    <p>Il progetto <strong>NAO Library Assistant</strong> rappresenta un sistema robotico avanzato che integra <span class="emphasis">ROS2 (Robot Operating System 2)</span> con il simulatore <span class="emphasis">Webots R2025a</span> per controllare un robot NAO virtuale in un ambiente bibliotecario simulato.</br>Il sistema permette all'utente di interagire tramite comandi testuali per richiedere libri specifici, mentre il robot NAO risponde alle richieste e naviga autonomamente tra gli scaffali della biblioteca per accompagnare l'utente allo scaffale del libro richiesto, dimostrando un'applicazione pratica della robotica di servizio.</p>
 
     <h2>1.1 Obiettivi del Sistema</h2>
 	<ul>
@@ -504,10 +502,10 @@ Dal punto di vista concettuale, la base di conoscenza può essere interpretata c
 
     <div class="page-break"></div>
 
-    <h1>4. FLUSSO DI COMUNICAZIONE</h1>
+    <h1>4. MAPPATURA NODI/TOPIC ROS</h1>
 
     <h2>4.1 Diagramma di Flusso Dati</h2>
-    
+
     <div class="architecture-diagram">
 ┌─────────────┐     user_input      ┌─────────────────┐
 │  Keyboard   │────────────────────▶│ Library         │
@@ -532,9 +530,7 @@ Dal punto di vista concettuale, la base di conoscenza può essere interpretata c
                                     │                 │
                                     └─────────────────┘</div>
 
-    <div class="figure-caption">Figura 2: Flusso di comunicazione tra i componenti del sistema</div>
 
-    <h2>4.2 Sequenza di Operazioni</h2>
     <ol>
         <li><strong>Input Utente</strong>: L'utente digita un comando specifico nel terminale</li>
         <li><strong>Pubblicazione</strong>: Il nodo keyboard_input_node pubblica il comando sul topic 'user_input'</li>
@@ -552,239 +548,9 @@ Dal punto di vista concettuale, la base di conoscenza può essere interpretata c
 
     <div class="page-break"></div>
 
-    <h1>5. STRUTTURA DEL PROGETTO</h1>
+    <h1>5. INTERFACCIA UTENTE</h1>
 
-    <h2>5.1 Organizzazione Directory</h2>
-    
-    <div class="directory-tree">nao_library_ws/
-├── src/nao_library_assistant/
-│   ├── nao_library_assistant/          # Moduli Python ROS2
-│   │   ├── __init__.py
-│   │   ├── keyboard_input_node.py      # Gestione input tastiera
-│   │   ├── library_assistant.py        # Logica principale sistema
-│   │   ├── library_database.py         # Interfaccia database
-│   │   └── nao_controller_node.py      # Controller robot Webots
-│   ├── controllers/go_library/         # Controller Webots
-│   │   └── go_library.py               # Bridge ROS2-Webots
-│   ├── data/
-│   │   ├── database_libri.json         # Database catalogo biblioteca
-│   │   └── password.json               # password riservata al personale
-│   ├── worlds/
-│   │   ├── esame_Nao.wbt               # Mondo Webots biblioteca
-│   │   └── oggetti.obj                 # Oggetti obj e mtl per l'ambiente
-│   ├── motions/                        # File movimenti preregistrati
-│   │   ├── Forwards50.motion
-│   │   ├── TurnLeft60.motion
-│   │   ├── TurnRight60.motion
-│   │   └── HandWave.motion
-│   ├── launch/
-│   │   └── nao_library.launch.py       # File lancio sistema
-│   ├── Audio/                          # File audio sistema
-│   ├── package.xml                     # Configurazione pacchetto
-│   ├── setup.py                        # Setup Python
-│   └── start_nao_library.sh            # Script avvio rapido
-└── install/                            # Directory build (generata automaticamente)
-    └── nao_library_assistant/
-        ├── lib/nao_library_assistant/  # Eseguibili compilati
-        │   ├── keyboard_input_node
-        │   ├── library_assistant
-        │   └── nao_controller_node
-        └── share/nao_library_assistant/ # Risorse condivise
-            ├── launch/
-            ├── worlds/
-            ├── controllers/
-            └── data/</div>
-
-    <h2>5.2 Importanza della Directory Install</h2>
-    
-    <div class="warning-box">
-        <strong>⚠️ ATTENZIONE CRITICA:</strong><br>
-        La directory <code>install/</code> è generata automaticamente dal comando <code>colcon build</code> e contiene:
-        <ul>
-            <li><strong>Eseguibili compilati</strong>: Versioni ottimizzate pronte per l'esecuzione</li>
-            <li><strong>Moduli Python installati</strong>: Importabili direttamente dal sistema ROS2</li>
-            <li><strong>Risorse condivise</strong>: Launch files, mondi Webots, database e configurazioni</li>
-        </ul>
-        <strong>Senza questa directory, il sistema non può funzionare!</strong>
-    </div>
-
-    <h2>5.3 File di Configurazione Principali</h2>
-    
-    <table>
-        <tr>
-            <th>File</th>
-            <th>Scopo</th>
-            <th>Formato</th>
-        </tr>
-        <tr>
-            <td>package.xml</td>
-            <td>Metadati pacchetto ROS2, dipendenze</td>
-            <td>XML</td>
-        </tr>
-        <tr>
-            <td>setup.py</td>
-            <td>Configurazione installazione Python</td>
-            <td>Python</td>
-        </tr>
-        <tr>
-            <td>database_libri.json</td>
-            <td>Catalogo biblioteca con mappatura scaffali</td>
-            <td>JSON</td>
-        </tr>
-        <tr>
-            <td>esame_Nao.wbt</td>
-            <td>Mondo 3D Webots con ambiente biblioteca</td>
-            <td>Webots World</td>
-        </tr>
-    </table>
-
-    <div class="page-break"></div>
-
-    <h1>6. SISTEMA DI NAVIGAZIONE</h1>
-
-    <h2>6.1 Mappatura Biblioteca</h2>
-    
-    <p>Il robot utilizza un sistema di <strong>percorsi predefiniti</strong> ottimizzati per raggiungere diverse sezioni della biblioteca. Ogni scaffale è associato a una sequenza specifica di movimenti:</p>
-
-    <div class="code-block">self.shelf_row_paths = {
-    1: [  # Scaffale Scienza e Cucina
-        {"action": "FORWARD", "distance": 1.0},
-        {"action": "TURN_LEFT", "angle": 45},
-        {"action": "FORWARD", "distance": 6.5},
-        {"action": "WAIT", "time": 10},
-        {"action": "RETURN_HOME"}
-    ],
-    2: [  # Scaffale Bambini Ragazzi e Fantasy Fantascienza
-        {"action": "FORWARD", "distance": 1.0},
-        {"action": "TURN_RIGHT", "angle": 100},
-        {"action": "FORWARD", "distance": 1.57},
-        {"action": "WAIT", "time": 10},
-        {"action": "RETURN_HOME"}
-    ],
-    3: [  # Scaffale Gialli e Narrativa
-        {"action": "FORWARD", "distance": 2.0},
-        {"action": "TURN_LEFT", "angle": 90},
-        {"action": "FORWARD", "distance": 3.0},
-        {"action": "WAIT", "time": 10},
-        {"action": "RETURN_HOME"}
-    ]
-}</div>
-
-<div class="success-box">
-        <strong>✅ Vantaggi del Sistema di Navigazione:</strong>
-        <ul>
-            <li><strong>Affidabilità</strong>: Percorsi testati e ottimizzati per ogni destinazione</li>
-            <li><strong>Prevedibilità</strong>: Comportamento robot sempre coerente e ripetibile</li>
-            <li><strong>Efficienza</strong>: Movimenti diretti senza calcoli real-time complessi</li>
-            <li><strong>Manutenibilità</strong>: Facile modifica e aggiunta di nuovi percorsi</li>
-        </ul>
-    </div>
-
-    <div class="page-break"></div>
-
-    <h1>7. INSTALLAZIONE E CONFIGURAZIONE</h1>
-
-    <h2>7.1 Prerequisiti Software</h2>
-    
-    <div class="warning-box">
-        <strong>⚠️ IMPORTANTE:</strong> Utilizzare esclusivamente <strong>Webots R2025a</strong> (non R2023b o versioni precedenti) per garantire piena compatibilità con il sistema.
-    </div>
-
-    <table>
-        <tr>
-            <th>Software</th>
-            <th>Versione Richiesta</th>
-            <th>Comando Verifica</th>
-        </tr>
-        <tr>
-            <td>ROS2 Humble</td>
-            <td>Humble Hawksbill</td>
-            <td><code>ros2 --version</code></td>
-        </tr>
-        <tr>
-            <td>Webots</td>
-            <td>R2025a</td>
-            <td><code>webots --version</code></td>
-        </tr>
-        <tr>
-            <td>Python</td>
-            <td>3.10+</td>
-            <td><code>python3 --version</code></td>
-        </tr>
-        <tr>
-            <td>Colcon</td>
-            <td>Latest</td>
-            <td><code>colcon --help</code></td>
-        </tr>
-    </table>
-
-    <h2>7.2 Procedura di Installazione Completa</h2>
-
-    <h3>Step 1: Preparazione su PC Sviluppo</h3>
-    
-    <div class="code-block"># Verifica prerequisiti sistema
-echo $ROS_DISTRO        # Deve mostrare ROS2 Humble
-webots --version        # Deve mostrare Webots R2025a
-python3 --version       # Deve essere 3.10 o superiore
-colcon --help           # Verifica build tool</div>
-
-    <h3>Step 2: Creazione Archivio per Trasferimento</h3>
-    
-    <div class="code-block"># Creare archivio completo incluso codice sorgente
-cd ~/
-tar -czf nao_library_complete.tar.gz nao_library_ws/
-
-# Verifica dimensione archivio (dovrebbe essere circa 50-100MB)
-ls -lh nao_library_complete.tar.gz</div>
-
-    <h3>Step 3: Installazione su PC Destinazione</h3>
-    
-    <div class="code-block"># Trasferire archivio al PC di destinazione
-scp nao_library_complete.tar.gz utente@pc-destinazione:~/
-
-# Accedere al PC destinazione
-ssh utente@pc-destinazione
-
-# Scompattare archivio
-cd ~/
-tar -xzf nao_library_complete.tar.gz
-
-# Configurare ambiente ROS2
-source /opt/ros/humble/setup.bash
-
-# REBUILD OBBLIGATORIO su ogni nuovo PC
-cd nao_library_ws/
-colcon build --packages-select nao_library_assistant
-
-# Configurare workspace locale
-source install/setup.bash</div>
-
-    <h2>7.3 Verifica Installazione</h2>
-    
-    <div class="code-block"># Verificare creazione eseguibili
-ls install/lib/nao_library_assistant/
-# Output atteso:
-# keyboard_input_node  library_assistant  nao_controller_node
-
-# Verificare risorse condivise  
-ls install/share/nao_library_assistant/
-# Output atteso:
-# controllers/  data/  launch/  worlds/
-
-# Test rapido sistema
-ros2 pkg list | grep nao_library_assistant
-# Deve mostrare: nao_library_assistant</div>
-
-    <div class="success-box">
-        <strong>✅ Controllo Installazione Riuscita:</strong><br>
-        Se tutti i comandi precedenti producono l'output atteso, l'installazione è completata con successo e il sistema è pronto per l'utilizzo.
-    </div>
-
-    <div class="page-break"></div>
-
-    <h1>8. INTERFACCIA UTENTE</h1>
-
-    <h2>8.1 Avvio del Sistema</h2>
+    <h2>5.1 Avvio del Sistema</h2>
     
     <div class="code-block"># Terminal 1: Avvio sistema principale
 cd ~/nao_library_ws/src/nao_library_assistant
@@ -797,7 +563,7 @@ source /opt/ros/humble/setup.bash
 source install/setup.bash
 ros2 run nao_library_assistant keyboard_input_node</div>
 
-    <h2>8.2 Keyboard Input Node</h2>
+    <h2>5.2 Keyboard Input Node</h2>
     
     <p>Il modulo <code>keyboard_input_node.py</code> gestisce l'interazione utente attraverso un'interfaccia a riga di comando intuitiva:</p>
 
@@ -824,7 +590,7 @@ ros2 run nao_library_assistant keyboard_input_node</div>
                 print("\n👋 Uscita dal sistema...")
                 break</div>
 
-    <h2>8.3 Comandi Disponibili</h2>
+    <h2>5.3 Comandi Disponibili</h2>
     
     <table>
         <tr>
@@ -892,7 +658,7 @@ ros2 run nao_library_assistant keyboard_input_node</div>
         </tr>
     </table>
 
-    <h2>8.4 Interfaccia Feedback</h2>
+    <h2>5.4 Interfaccia Feedback</h2>
     
     <div class="info-box">
         <strong>🖥️ Messaggi di Sistema:</strong>
@@ -902,6 +668,236 @@ ros2 run nao_library_assistant keyboard_input_node</div>
             <li><strong>Completamento</strong>: "✅ Missione completata - Scaffale raggiunto"</li>
             <li><strong>Errore</strong>: "❌ Libro non trovato nel catalogo"</li>
         </ul>
+    </div>
+
+    <div class="page-break"></div>
+
+    <h1>6. SISTEMA DI NAVIGAZIONE</h1>
+
+    <h2>6.1 Mappatura Biblioteca</h2>
+    
+    <p>Il robot utilizza un sistema di <strong>percorsi predefiniti</strong> ottimizzati per raggiungere diverse sezioni della biblioteca. Ogni scaffale è associato a una sequenza specifica di movimenti:</p>
+
+    <div class="code-block">self.shelf_row_paths = {
+    1: [  # Scaffale Scienza e Cucina
+        {"action": "FORWARD", "distance": 1.0},
+        {"action": "TURN_LEFT", "angle": 45},
+        {"action": "FORWARD", "distance": 6.5},
+        {"action": "WAIT", "time": 10},
+        {"action": "RETURN_HOME"}
+    ],
+    2: [  # Scaffale Bambini Ragazzi e Fantasy Fantascienza
+        {"action": "FORWARD", "distance": 1.0},
+        {"action": "TURN_RIGHT", "angle": 100},
+        {"action": "FORWARD", "distance": 1.57},
+        {"action": "WAIT", "time": 10},
+        {"action": "RETURN_HOME"}
+    ],
+    3: [  # Scaffale Gialli e Narrativa
+        {"action": "FORWARD", "distance": 2.0},
+        {"action": "TURN_LEFT", "angle": 90},
+        {"action": "FORWARD", "distance": 3.0},
+        {"action": "WAIT", "time": 10},
+        {"action": "RETURN_HOME"}
+    ]
+}</div>
+
+<div class="success-box">
+        <strong>✅ Vantaggi del Sistema di Navigazione:</strong>
+        <ul>
+            <li><strong>Affidabilità</strong>: Percorsi testati e ottimizzati per ogni destinazione</li>
+            <li><strong>Prevedibilità</strong>: Comportamento robot sempre coerente e ripetibile</li>
+            <li><strong>Efficienza</strong>: Movimenti diretti senza calcoli real-time complessi</li>
+            <li><strong>Manutenibilità</strong>: Facile modifica e aggiunta di nuovi percorsi</li>
+        </ul>
+    </div>
+
+    <div class="page-break"></div>
+
+    <h1>7. STRUTTURA DEL PROGETTO</h1>
+
+    <h2>7.1 Organizzazione Directory</h2>
+    
+    <div class="directory-tree">nao_library_ws/
+├── src/nao_library_assistant/
+│   ├── nao_library_assistant/          # Moduli Python ROS2
+│   │   ├── __init__.py
+│   │   ├── keyboard_input_node.py      # Gestione input tastiera
+│   │   ├── library_assistant.py        # Logica principale sistema
+│   │   ├── library_database.py         # Interfaccia database
+│   │   └── nao_controller_node.py      # Controller robot Webots
+│   ├── controllers/go_library/         # Controller Webots
+│   │   └── go_library.py               # Bridge ROS2-Webots
+│   ├── data/
+│   │   ├── database_libri.json         # Database catalogo biblioteca
+│   │   └── password.json               # password riservata al personale
+│   ├── worlds/
+│   │   ├── esame_Nao.wbt               # Mondo Webots biblioteca
+│   │   └── oggetti.obj                 # Oggetti obj e mtl per l'ambiente
+│   ├── motions/                        # File movimenti preregistrati
+│   │   ├── Forwards50.motion
+│   │   ├── TurnLeft60.motion
+│   │   ├── TurnRight60.motion
+│   │   └── HandWave.motion
+│   ├── launch/
+│   │   └── nao_library.launch.py       # File lancio sistema
+│   ├── Audio/                          # File audio sistema
+│   ├── package.xml                     # Configurazione pacchetto
+│   ├── setup.py                        # Setup Python
+│   └── start_nao_library.sh            # Script avvio rapido
+└── install/                            # Directory build (generata automaticamente)
+    └── nao_library_assistant/
+        ├── lib/nao_library_assistant/  # Eseguibili compilati
+        │   ├── keyboard_input_node
+        │   ├── library_assistant
+        │   └── nao_controller_node
+        └── share/nao_library_assistant/ # Risorse condivise
+            ├── launch/
+            ├── worlds/
+            ├── controllers/
+            └── data/</div>
+
+    <h2>7.2 Importanza della Directory Install</h2>
+    
+    <div class="warning-box">
+        <strong>⚠️ ATTENZIONE CRITICA:</strong><br>
+        La directory <code>install/</code> è generata automaticamente dal comando <code>colcon build</code> e contiene:
+        <ul>
+            <li><strong>Eseguibili compilati</strong>: Versioni ottimizzate pronte per l'esecuzione</li>
+            <li><strong>Moduli Python installati</strong>: Importabili direttamente dal sistema ROS2</li>
+            <li><strong>Risorse condivise</strong>: Launch files, mondi Webots, database e configurazioni</li>
+        </ul>
+        <strong>Senza questa directory, il sistema non può funzionare!</strong>
+    </div>
+
+    <h2>7.3 File di Configurazione Principali</h2>
+    
+    <table>
+        <tr>
+            <th>File</th>
+            <th>Scopo</th>
+            <th>Formato</th>
+        </tr>
+        <tr>
+            <td>package.xml</td>
+            <td>Metadati pacchetto ROS2, dipendenze</td>
+            <td>XML</td>
+        </tr>
+        <tr>
+            <td>setup.py</td>
+            <td>Configurazione installazione Python</td>
+            <td>Python</td>
+        </tr>
+        <tr>
+            <td>database_libri.json</td>
+            <td>Catalogo biblioteca con mappatura scaffali</td>
+            <td>JSON</td>
+        </tr>
+        <tr>
+            <td>esame_Nao.wbt</td>
+            <td>Mondo 3D Webots con ambiente biblioteca</td>
+            <td>Webots World</td>
+        </tr>
+    </table>
+
+    <div class="page-break"></div>
+
+    <h1>8. INSTALLAZIONE E CONFIGURAZIONE</h1>
+
+    <h2>8.1 Prerequisiti Software</h2>
+    
+    <div class="warning-box">
+        <strong>⚠️ IMPORTANTE:</strong> Utilizzare esclusivamente <strong>Webots R2025a</strong> (non R2023b o versioni precedenti) per garantire piena compatibilità con il sistema.
+    </div>
+
+    <table>
+        <tr>
+            <th>Software</th>
+            <th>Versione Richiesta</th>
+            <th>Comando Verifica</th>
+        </tr>
+        <tr>
+            <td>ROS2 Humble</td>
+            <td>Humble Hawksbill</td>
+            <td><code>ros2 --version</code></td>
+        </tr>
+        <tr>
+            <td>Webots</td>
+            <td>R2025a</td>
+            <td><code>webots --version</code></td>
+        </tr>
+        <tr>
+            <td>Python</td>
+            <td>3.10+</td>
+            <td><code>python3 --version</code></td>
+        </tr>
+        <tr>
+            <td>Colcon</td>
+            <td>Latest</td>
+            <td><code>colcon --help</code></td>
+        </tr>
+    </table>
+
+    <h2>8.2 Procedura di Installazione Completa</h2>
+
+    <h3>Step 1: Preparazione su PC Sviluppo</h3>
+    
+    <div class="code-block"># Verifica prerequisiti sistema
+echo $ROS_DISTRO        # Deve mostrare ROS2 Humble
+webots --version        # Deve mostrare Webots R2025a
+python3 --version       # Deve essere 3.10 o superiore
+colcon --help           # Verifica build tool</div>
+
+    <h3>Step 2: Creazione Archivio per Trasferimento</h3>
+    
+    <div class="code-block"># Creare archivio completo incluso codice sorgente
+cd ~/
+tar -czf nao_library_complete.tar.gz nao_library_ws/
+
+# Verifica dimensione archivio (dovrebbe essere circa 50-100MB)
+ls -lh nao_library_complete.tar.gz</div>
+
+    <h3>Step 3: Installazione su PC Destinazione</h3>
+    
+    <div class="code-block"># Trasferire archivio al PC di destinazione
+scp nao_library_complete.tar.gz utente@pc-destinazione:~/
+
+# Accedere al PC destinazione
+ssh utente@pc-destinazione
+
+# Scompattare archivio
+cd ~/
+tar -xzf nao_library_complete.tar.gz
+
+# Configurare ambiente ROS2
+source /opt/ros/humble/setup.bash
+
+# REBUILD OBBLIGATORIO su ogni nuovo PC
+cd nao_library_ws/
+colcon build --packages-select nao_library_assistant
+
+# Configurare workspace locale
+source install/setup.bash</div>
+
+    <h2>8.3 Verifica Installazione</h2>
+    
+    <div class="code-block"># Verificare creazione eseguibili
+ls install/lib/nao_library_assistant/
+# Output atteso:
+# keyboard_input_node  library_assistant  nao_controller_node
+
+# Verificare risorse condivise  
+ls install/share/nao_library_assistant/
+# Output atteso:
+# controllers/  data/  launch/  worlds/
+
+# Test rapido sistema
+ros2 pkg list | grep nao_library_assistant
+# Deve mostrare: nao_library_assistant</div>
+
+    <div class="success-box">
+        <strong>✅ Controllo Installazione Riuscita:</strong><br>
+        Se tutti i comandi precedenti producono l'output atteso, l'installazione è completata con successo e il sistema è pronto per l'utilizzo.
     </div>
 
     <div class="page-break"></div>
